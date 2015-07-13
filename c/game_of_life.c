@@ -23,6 +23,7 @@ int main() {
     nextboard = next_generation(current_board);
     free(current_board);
     current_board = nextboard;
+    sleep(1);
   }
 }
 
@@ -73,7 +74,6 @@ int sum(int row, int column, char **board) {
     board[above][column] +
     board[above][right] +
     board[row][left] +
-    board[row][column] +
     board[row][right] +
     board[below][left] +
     board[below][column] +
