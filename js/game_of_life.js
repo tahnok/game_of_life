@@ -1,25 +1,33 @@
 var starting_board = [
-  "00000000000000000000000000000000".split(""),
-  "00000000000000000000000000000000".split(""),
-  "00000000000000000000000000000000".split(""),
-  "00000000000000000000000000000000".split(""),
-  "00000000000000000000000000000000".split(""),
-  "00000000000000000000000000000000".split(""),
-  "00000000001110100000000000000000".split(""),
-  "00000000001000000000000000000000".split(""),
-  "00000000000001100000000000000000".split(""),
-  "00000000000110100000000000000000".split(""),
-  "00000000001010100000000000000000".split(""),
-  "00000000000000000000000000000000".split(""),
-  "00000000000000000000000000000000".split(""),
-  "00000000000000000000000000000000".split(""),
-  "00000000000000000000000000000000".split(""),
-  "00000000000000000000000000000000".split(""),
-  "00000000000000000000000000000000".split(""),
+  "00000000000000000000000000000000",
+  "00000000000000000000000000000000",
+  "00000000000000000000000000000000",
+  "00000000000000000000000000000000",
+  "00000000000000000000000000000000",
+  "00000000000000000000000000000000",
+  "00000000001110100000000000000000",
+  "00000000001000000000000000000000",
+  "00000000000001100000000000000000",
+  "00000000000110100000000000000000",
+  "00000000001010100000000000000000",
+  "00000000000000000000000000000000",
+  "00000000000000000000000000000000",
+  "00000000000000000000000000000000",
+  "00000000000000000000000000000000",
+  "00000000000000000000000000000000",
+  "00000000000000000000000000000000",
 ]
 
-var WIDTH = 32
-var HEIGHT = 16;
+var HEIGHT = starting_board.length;
+var WIDTH = starting_board[0].length;
+
+function generate_board_from_seed(seed) {
+  var board = [];
+  seed.forEach(function(row) {
+    board.push(row.split('').map(function(i) { return parseInt(i, 10); }));
+  });
+  return board;
+}
 
 function displayBoard(board) {
   board.forEach(function(row, index) {
@@ -50,24 +58,24 @@ function gen(board, current, row_index, column_index) {
   var left_column = (WIDTH + column_index - 1) % WIDTH;
   var right_column = (WIDTH + column_index + 1) % WIDTH;
 
-  var neighbours = parseInt(board[upper_row][left_column], 10) +
-                   parseInt(board[upper_row][column_index], 10) +
-                   parseInt(board[upper_row][right_column], 10) +
-                   parseInt(board[row_index][left_column], 10) +
-                   parseInt(board[row_index][right_column], 10) +
-                   parseInt(board[lower_row][left_column], 10) +
-                   parseInt(board[lower_row][column_index], 10) +
-                   parseInt(board[lower_row][right_column], 10);
-  if(neighbours === 3) {
-    return '1';
-  } else if(neighbours === 2 && current === '1') {
-    return '1';
+  var neighbours = board[upper_row][left_column] +
+                   board[upper_row][column_index] +
+                   board[upper_row][right_column] +
+                   board[row_index][left_column] +
+                   board[row_index][right_column] +
+                   board[lower_row][left_column] +
+                   board[lower_row][column_index] +
+                   board[lower_row][right_column];
+  if((neighbours === 3) ||
+    (neighbours === 2 && current === 1)) {
+    return 1;
   } else {
-    return '0';
+    return 0;
   }
 }
 
-count = 0;
+var count = 0;
+var board = generate_board_from_seed(starting_board);
 function loop() {
   clear();
   console.log("gen: " + count++);
